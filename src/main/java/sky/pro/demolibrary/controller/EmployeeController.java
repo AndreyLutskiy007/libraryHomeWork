@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import sky.pro.demolibrary.exception.EmployeeAlreadyAddedException;
 import sky.pro.demolibrary.exception.EmployeeNotFoundException;
 import sky.pro.demolibrary.exception.EmployeeStorageIsFullException;
+import sky.pro.demolibrary.exception.WrongEmployeeDataException;
 import sky.pro.demolibrary.people.Employee;
 import sky.pro.demolibrary.service.EmployeeService;
 
@@ -14,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-
 
 
     private final EmployeeService employeeService;
@@ -43,12 +43,12 @@ public class EmployeeController {
     public List<Employee> getEmployees() {
         return employeeService.getAll();
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({EmployeeStorageIsFullException.class,EmployeeAlreadyAddedException.class})
+    @ExceptionHandler({EmployeeStorageIsFullException.class, EmployeeAlreadyAddedException.class, WrongEmployeeDataException.class})
     public String handleException(RuntimeException e) {
         return String.format("%s %s", HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
-
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
